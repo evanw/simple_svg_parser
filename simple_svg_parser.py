@@ -331,15 +331,16 @@ class _Parser:
   def fillAndStroke(self, node):
     fill = _attr(node, 'fill') or 'black'
     stroke = _attr(node, 'stroke') or 'none'
+    opacity = float(_attr(node, 'opacity') or '1')
     strokeWidth = _attr(node, 'stroke-width') or '1'
 
     if fill != 'none':
       c = _color(fill)
-      self.handler.fill(c[0], c[1], c[2], c[3])
+      self.handler.fill(c[0], c[1], c[2], c[3] * opacity)
 
     if stroke != 'none':
       c = _color(stroke)
-      self.handler.stroke(c[0], c[1], c[2], c[3], _units(strokeWidth))
+      self.handler.stroke(c[0], c[1], c[2], c[3] * opacity, _units(strokeWidth))
 
   def visitSVG(self, node):
     data = {}
