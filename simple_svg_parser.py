@@ -243,10 +243,10 @@ class _Parser:
     cry = ry * _CIRCLE_APPROXIMATION_CONSTANT
     self.handler.beginPath()
     self.moveTo(_Vector(cx - rx, cy))
-    self.cubicCurveTo(_Vector(cx - rx, cy - cy), _Vector(cx - cx, cy - ry), _Vector(cx, cy - ry))
-    self.cubicCurveTo(_Vector(cx + cx, cy - ry), _Vector(cx + rx, cy - cy), _Vector(cx + rx, cy))
-    self.cubicCurveTo(_Vector(cx + rx, cy + cy), _Vector(cx + cx, cy + ry), _Vector(cx, cy + ry))
-    self.cubicCurveTo(_Vector(cx - cx, cy + ry), _Vector(cx - rx, cy + cy), _Vector(cx - rx, cy))
+    self.cubicCurveTo(_Vector(cx - rx, cy - cry), _Vector(cx - crx, cy - ry), _Vector(cx, cy - ry))
+    self.cubicCurveTo(_Vector(cx + crx, cy - ry), _Vector(cx + rx, cy - cry), _Vector(cx + rx, cy))
+    self.cubicCurveTo(_Vector(cx + rx, cy + cry), _Vector(cx + crx, cy + ry), _Vector(cx, cy + ry))
+    self.cubicCurveTo(_Vector(cx - crx, cy + ry), _Vector(cx - rx, cy + cry), _Vector(cx - rx, cy))
     self.handler.closePath()
 
   def outlineRect(self, x, y, w, h):
