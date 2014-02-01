@@ -172,6 +172,18 @@ _color_table = {
   'yellowgreen': '#9ACD32',
 }
 
+_align_table = {
+  'xMinYMin': (0.0, 0.0),
+  'xMidYMin': (0.5, 0.0),
+  'xMaxYMin': (1.0, 0.0),
+  'xMinYMid': (0.0, 0.5),
+  'xMidYMid': (0.5, 0.5),
+  'xMaxYMid': (1.0, 0.5),
+  'xMinYMax': (0.0, 1.0),
+  'xMidYMax': (0.5, 1.0),
+  'xMaxYMax': (1.0, 1.0),
+}
+
 class _Vector:
   def __init__(self, x, y):
     self.x = x
@@ -342,10 +354,27 @@ class _Parser:
       c = _color(stroke)
       self.handler.stroke(c[0], c[1], c[2], c[3] * opacity, _units(strokeWidth))
 
+  def visitViewbox(self, node, data):
+    match = re.match(r'^[\s,]*([^\s,]+)[\s,]+([^\s,]+)[\s,]+([^\s,]+)[\s,]+([^\s,]+)[\s,]*$', _attr(node, 'viewbox'))
+    if match:
+      aspect = _attr(node, 'preserveAspectRatio') or 'xMidYMid'
+      x, y, w, h = map(_units, match.groups())
+      data.setdefault('width', w)
+      data.setdefault('height', h)
+      sx = data['width'] / w
+      sy = data['height'] / h
+      if aspect in _align_table:
+        sx = sy = min(sx, sy)
+        ax, ay = _align_table[aspect]
+        x += (w - data['width'] / sx) * ax
+        y += (h - data['height'] / sy) * ay
+      self.matrix = _Matrix(sx, 0, -x * sx, 0, sy, -y * sy)
+
   def visitSVG(self, node):
     data = {}
     if _attr(node, 'width'): data['width'] = _units(_attr(node, 'width'))
     if _attr(node, 'height'): data['height'] = _units(_attr(node, 'height'))
+    if _attr(node, 'viewbox'): self.visitViewbox(node, data)
     if data: self.handler.metadata(data)
 
   def visit(self, node):

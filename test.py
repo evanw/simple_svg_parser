@@ -6,7 +6,8 @@ class Handler:
 
   def metadata(self, data):
     self.lines += [
-      'var canvas = document.getElementById("canvas");',
+      'var canvases = document.getElementsByTagName("canvas");',
+      'var canvas = canvases[canvases.length - 1];',
       'var context = canvas.getContext("2d");',
       'var width = {0};'.format(data.get('width', 0)),
       'var height = {0};'.format(data.get('height', 0)),
@@ -46,7 +47,7 @@ class Handler:
       'context.stroke();',
     ]
 
-svg = '''
+svg = ['''
 <svg xmlns="http://www.w3.org/2000/svg" width="500px" height="500px">
   <rect x="0" y="0" width="500" height="500" fill="#EEEEEE"/>
 
@@ -73,16 +74,25 @@ svg = '''
     <path d="M 190 10 C 215 10 240 10 240 35 Q 215 35 215 60" fill="blue" stroke="black" stroke-width="4"/>
   </g>
 </svg>
-'''
+''', '''
+<svg xmlns="http://www.w3.org/2000/svg" width="500px" height="500px" viewbox="50 100 150 200">
+  <rect width="500" height="500" fill="black"/>
+  <rect x="50" y="100" width="150" height="200" fill="yellow"/>
+  <rect x="60" y="110" width="130" height="180" fill="red"/>
+</svg>
+''']
 
 html = '''
 %s
-<canvas id="canvas"></canvas>
+<canvas></canvas>
 <script>
 %s
 </script>
 '''
 
-handler = Handler()
-simple_svg_parser.parse(svg, handler)
-open('test.html', 'w').write(html % (svg, '\n'.join(handler.lines)))
+output = ''
+for xml in svg:
+  handler = Handler()
+  simple_svg_parser.parse(xml, handler)
+  output += html % (xml, '\n'.join(handler.lines))
+open('test.html', 'w').write(output)
