@@ -355,7 +355,7 @@ class _Parser:
       self.handler.stroke(c[0], c[1], c[2], c[3] * opacity, _units(strokeWidth))
 
   def visitViewbox(self, node, data):
-    match = re.match(r'^[\s,]*([^\s,]+)[\s,]+([^\s,]+)[\s,]+([^\s,]+)[\s,]+([^\s,]+)[\s,]*$', _attr(node, 'viewbox'))
+    match = re.match(r'^[\s,]*([^\s,]+)[\s,]+([^\s,]+)[\s,]+([^\s,]+)[\s,]+([^\s,]+)[\s,]*$', _attr(node, 'viewBox'))
     if match:
       aspect = _attr(node, 'preserveAspectRatio') or 'xMidYMid'
       x, y, w, h = map(_units, match.groups())
@@ -374,7 +374,7 @@ class _Parser:
     data = {}
     if _attr(node, 'width'): data['width'] = _units(_attr(node, 'width'))
     if _attr(node, 'height'): data['height'] = _units(_attr(node, 'height'))
-    if _attr(node, 'viewbox'): self.visitViewbox(node, data)
+    if _attr(node, 'viewBox'): self.visitViewbox(node, data)
     if data: self.handler.metadata(data)
 
   def visit(self, node):

@@ -75,7 +75,7 @@ svg = ['''
   </g>
 </svg>
 ''', '''
-<svg xmlns="http://www.w3.org/2000/svg" width="500px" height="500px" viewbox="50 100 150 200">
+<svg xmlns="http://www.w3.org/2000/svg" width="500px" height="500px" viewBox="50 100 150 200">
   <rect width="500" height="500" fill="black"/>
   <rect x="50" y="100" width="150" height="200" fill="yellow"/>
   <rect x="60" y="110" width="130" height="180" fill="red"/>
