@@ -328,12 +328,14 @@ class _Parser:
     self.fillAndStroke(node)
 
   def visitPolyline(self, node):
+    self.handler.beginPath()
     for i, point in enumerate(_points(_attr(node, 'points'))):
       if i: self.lineTo(point)
       else: self.moveTo(point)
     self.fillAndStroke(node)
 
   def visitPolygon(self, node):
+    self.handler.beginPath()
     for i, point in enumerate(_points(_attr(node, 'points'))):
       if i: self.lineTo(point)
       else: self.moveTo(point)
