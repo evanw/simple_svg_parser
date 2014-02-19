@@ -343,10 +343,12 @@ class _Parser:
     self.fillAndStroke(node)
 
   def fillAndStroke(self, node):
-    fill = _attr(node, 'fill') or 'black'
-    stroke = _attr(node, 'stroke') or 'none'
-    opacity = float(_attr(node, 'opacity') or '1')
-    strokeWidth = _attr(node, 'stroke-width') or '1'
+    style = _attr(node, 'style') or ''
+    style = dict(tuple(y.strip() for y in x.split(':')) for x in style.split(';') if x)
+    fill = _attr(node, 'fill') or style.get('fill', 'black')
+    stroke = _attr(node, 'stroke') or style.get('stroke', 'none')
+    opacity = float(_attr(node, 'opacity') or style.get('opacity', '1'))
+    strokeWidth = _attr(node, 'stroke-width') or style.get('stroke-width', '1')
 
     if fill != 'none':
       c = _color(fill)
@@ -432,6 +434,9 @@ class _Parser:
       if command in 'Mm':
         cursor = nextXY()
         self.moveTo(cursor)
+        while nextIsNumber():
+          cursor = nextXY()
+          self.lineTo(cursor)
         delta = None
 
       elif command in 'Ll':
