@@ -51,13 +51,13 @@ svg = ['''
 <svg xmlns="http://www.w3.org/2000/svg" width="500px" height="500px">
   <rect x="0" y="0" width="500" height="500" fill="#EEEEEE"/>
 
-  <rect x="10" y="10" width="50" height="50" rx="10" ry="200" fill="red" stroke="black" stroke-width="4"/>
-  <path d="M 10 70 60 70 60 120 10 120 Z" fill="red" stroke="black" stroke-width="4"/>
-  <circle cx="95" cy="35" r="25" fill="red" stroke="black" stroke-width="4"/>
-  <ellipse cx="95" cy="95" rx="25" ry="15" fill="red" stroke="black" stroke-width="4"/>
-  <polygon points="130 70 180 70 155 120" fill="red" stroke="black" stroke-width="4"/>
-  <polyline points="130 10 180 10 155 60" fill="red" stroke="black" stroke-width="4"/>
-  <path d="M 190 10 C 215 10 240 10 240 35 Q 215 35 215 60" fill="red" stroke="black" stroke-width="4"/>
+  <rect x="10" y="10" width="50" height="50" rx="10" ry="200" fill="#FF0000" stroke="black" stroke-width="4"/>
+  <path d="M 10 70 60 70 60 120 10 120 Z" fill="#FF0000" stroke="black" stroke-width="4"/>
+  <circle cx="95" cy="35" r="25" fill="#FF0000" stroke="black" stroke-width="4"/>
+  <ellipse cx="95" cy="95" rx="25" ry="15" fill="#FF0000" stroke="black" stroke-width="4"/>
+  <polygon points="130 70 180 70 155 120" fill="#FF0000" stroke="black" stroke-width="4"/>
+  <polyline points="130 10 180 10 155 60" fill="#FF0000" stroke="black" stroke-width="4"/>
+  <path d="M 190 10 C 215 10 240 10 240 35 Q 215 35 215 60" fill="#FF0000" stroke="black" stroke-width="4"/>
 
   <rect transform="matrix(0 1 -1 0 400 0)" x="10" y="10" width="50" height="50" rx="10" ry="200" style="fill:green; stroke : black ; stroke-width:4"/>
   <path transform="matrix(0 1 -1 0 400 0)" d="M 10 70 60 70 60 120 10 120 Z" style="fill:green; stroke : black ; stroke-width:4"/>
@@ -68,20 +68,21 @@ svg = ['''
   <path transform="matrix(0 1 -1 0 400 0)" d="M 190 10 C 215 10 240 10 240 35 Q 215 35 215 60" style="fill:green; stroke : black ; stroke-width:4"/>
 
   <g transform="matrix(0 -1 1 0 0 400)">
-    <rect x="10" y="10" width="50" height="50" rx="10" ry="200" fill="blue" stroke="black" stroke-width="4"/>
-    <path d="M 10 70 60 70 60 120 10 120 Z" fill="blue" stroke="black" stroke-width="4"/>
-    <circle cx="95" cy="35" r="25" fill="blue" stroke="black" stroke-width="4"/>
-    <ellipse cx="95" cy="95" rx="25" ry="15" fill="blue" stroke="black" stroke-width="4"/>
-    <polygon points="130 70 180 70 155 120" fill="blue" stroke="black" stroke-width="4"/>
-    <polyline points="130 10 180 10 155 60" fill="blue" stroke="black" stroke-width="4"/>
-    <path d="M 190 10 C 215 10 240 10 240 35 Q 215 35 215 60" fill="blue" stroke="black" stroke-width="4"/>
+    <rect x="10" y="10" width="50" height="50" rx="10" ry="200" fill="#00F" stroke="black" stroke-width="4"/>
+    <path d="M 10 70 60 70 60 120 10 120 Z" fill="#00F" stroke="black" stroke-width="4"/>
+    <circle cx="95" cy="35" r="25" fill="#00F" stroke="black" stroke-width="4"/>
+    <ellipse cx="95" cy="95" rx="25" ry="15" fill="#00F" stroke="black" stroke-width="4"/>
+    <polygon points="130 70 180 70 155 120" fill="#00F" stroke="black" stroke-width="4"/>
+    <polyline points="130 10 180 10 155 60" fill="#00F" stroke="black" stroke-width="4"/>
+    <path d="M 190 10 C 215 10 240 10 240 35 Q 215 35 215 60" fill="#00F" stroke="black" stroke-width="4"/>
   </g>
 </svg>
 ''', '''
 <svg xmlns="http://www.w3.org/2000/svg" width="500px" height="500px" viewBox="50 100 150 200">
   <rect width="500" height="500" fill="black"/>
-  <rect x="50" y="100" width="150" height="200" fill="yellow"/>
-  <rect x="60" y="110" width="130" height="180" fill="red"/>
+  <rect x="50" y="100" width="150" height="200" fill=" yellow "/>
+  <rect x="60" y="110" width="130" height="180" fill=" rgb( 255 , 0 , 0 ) "/>
+  <path d="M.0.0-200+200+200+200zM100 250 100 150" fill="rgba(0, 255, 0, 0.5)" stroke="black" stroke-width="4"/>
 </svg>
 ''']
 

@@ -226,6 +226,7 @@ class _Parser:
     self.matrix = _Matrix()
     self.handler = handler
     self.cursor = _Vector(0, 0)
+    self.strokeScale = 1
 
   def moveTo(self, p):
     self.cursor = p
@@ -356,7 +357,7 @@ class _Parser:
 
     if stroke != 'none':
       c = _color(stroke)
-      self.handler.stroke(c[0], c[1], c[2], c[3] * opacity, _units(strokeWidth))
+      self.handler.stroke(c[0], c[1], c[2], c[3] * opacity, self.strokeScale * _units(strokeWidth))
 
   def visitViewbox(self, node, data):
     match = re.match(r'^[\s,]*([^\s,]+)[\s,]+([^\s,]+)[\s,]+([^\s,]+)[\s,]+([^\s,]+)[\s,]*$', _attr(node, 'viewBox'))
@@ -373,6 +374,7 @@ class _Parser:
         x += (w - data['width'] / sx) * ax
         y += (h - data['height'] / sy) * ay
       self.matrix = _Matrix(sx, 0, -x * sx, 0, sy, -y * sy)
+      self.strokeScale = math.sqrt(sx * sy)
 
   def visitSVG(self, node):
     data = {}
@@ -503,11 +505,24 @@ class _Parser:
         raise Exception('Unsupported command syntax: %s' % repr(command))
 
 def _color(text):
+  text = text.strip()
   text = _color_table.get(text, text)
 
   if re.match(r'^#[A-Fa-f0-9]{6}$', text):
     value = int(text[1:], 16)
     return (value >> 16 & 255, value >> 8 & 255, value & 255, 1.0)
+
+  if re.match(r'^#[A-Fa-f0-9]{3}$', text):
+    value = int(text[1:], 16)
+    return ((value >> 8 & 15) * 0x11, (value >> 4 & 15) * 0x11, (value & 15) * 0x11, 1.0)
+
+  match = re.match(r'^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$', text)
+  if match:
+    return (int(match.group(1)), int(match.group(2)), int(match.group(3)), 1.0)
+
+  match = re.match(r'^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+(?:\.\d+)?|\.\d+)\s*\)$', text)
+  if match:
+    return (int(match.group(1)), int(match.group(2)), int(match.group(3)), float(match.group(4)))
 
   raise Exception('Unsupported color syntax: %s' % repr(text))
 
@@ -518,7 +533,7 @@ def _attr(node, name):
   return node.attributes.get(name).value if node.attributes and node.attributes.get(name) else None
 
 def _tokenize(text):
-  tokens = [x.strip() for x in re.split(r'([+-]?\d+(?:\.\d+)?|\b\s+\b)', text)]
+  tokens = [x.strip() for x in re.split(r'([+-]?\d+(?:\.\d+)?|[+-]?\.\d+|\b\s+\b|\w(?=\w))', text)]
   tokens = [x for x in tokens if x not in ['', ',']]
   return tokens
 
