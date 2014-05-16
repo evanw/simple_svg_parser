@@ -227,6 +227,7 @@ class _Parser:
     self.handler = handler
     self.cursor = _Vector(0, 0)
     self.strokeScale = 1
+    self.opacity = 1
 
   def moveTo(self, p):
     self.cursor = p
@@ -287,12 +288,12 @@ class _Parser:
     self.cubicCurveTo(_Vector(x, y + cry), _Vector(x + crx, y), _Vector(x + rx, y))
     self.handler.closePath()
 
-  def visitPath(self, node):
+  def visitPath(self, node, style):
     self.handler.beginPath()
     self._path(_attr(node, 'd'))
-    self.fillAndStroke(node)
+    self.fillAndStroke(node, style)
 
-  def visitRect(self, node):
+  def visitRect(self, node, style):
     x = _units(_attr(node, 'x'))
     y = _units(_attr(node, 'y'))
     w = _units(_attr(node, 'width'))
@@ -301,9 +302,9 @@ class _Parser:
     ry = _units(_attr(node, 'ry'))
     if rx or ry: self.outlineRoundedRect(x, y, w, h, rx, ry)
     else: self.outlineRect(x, y, w, h)
-    self.fillAndStroke(node)
+    self.fillAndStroke(node, style)
 
-  def visitLine(self, node):
+  def visitLine(self, node, style):
     x1 = _units(_attr(node, 'x1'))
     y1 = _units(_attr(node, 'y1'))
     x2 = _units(_attr(node, 'x2'))
@@ -311,53 +312,50 @@ class _Parser:
     self.handler.beginPath()
     self.moveTo(_Vector(x1, y1))
     self.lineTo(_Vector(x2, y2))
-    self.fillAndStroke(node)
+    self.fillAndStroke(node, style)
 
-  def visitCircle(self, node):
+  def visitCircle(self, node, style):
     x = _units(_attr(node, 'cx'))
     y = _units(_attr(node, 'cy'))
     r = _units(_attr(node, 'r'))
     self.outlineEllipse(x, y, r, r)
-    self.fillAndStroke(node)
+    self.fillAndStroke(node, style)
 
-  def visitEllipse(self, node):
+  def visitEllipse(self, node, style):
     x = _units(_attr(node, 'cx'))
     y = _units(_attr(node, 'cy'))
     rx = _units(_attr(node, 'rx'))
     ry = _units(_attr(node, 'ry'))
     self.outlineEllipse(x, y, rx, ry)
-    self.fillAndStroke(node)
+    self.fillAndStroke(node, style)
 
-  def visitPolyline(self, node):
+  def visitPolyline(self, node, style):
     self.handler.beginPath()
     for i, point in enumerate(_points(_attr(node, 'points'))):
       if i: self.lineTo(point)
       else: self.moveTo(point)
-    self.fillAndStroke(node)
+    self.fillAndStroke(node, style)
 
-  def visitPolygon(self, node):
+  def visitPolygon(self, node, style):
     self.handler.beginPath()
     for i, point in enumerate(_points(_attr(node, 'points'))):
       if i: self.lineTo(point)
       else: self.moveTo(point)
     self.handler.closePath()
-    self.fillAndStroke(node)
+    self.fillAndStroke(node, style)
 
-  def fillAndStroke(self, node):
-    style = _attr(node, 'style') or ''
-    style = dict(tuple(y.strip() for y in x.split(':')) for x in style.split(';') if x)
+  def fillAndStroke(self, node, style):
     fill = _attr(node, 'fill') or style.get('fill', 'black')
     stroke = _attr(node, 'stroke') or style.get('stroke', 'none')
-    opacity = float(_attr(node, 'opacity') or style.get('opacity', '1'))
     strokeWidth = _attr(node, 'stroke-width') or style.get('stroke-width', '1')
 
     if fill != 'none':
       c = _color(fill)
-      self.handler.fill(c[0], c[1], c[2], c[3] * opacity)
+      self.handler.fill(c[0], c[1], c[2], c[3] * self.opacity)
 
     if stroke != 'none':
       c = _color(stroke)
-      self.handler.stroke(c[0], c[1], c[2], c[3] * opacity, self.strokeScale * _units(strokeWidth))
+      self.handler.stroke(c[0], c[1], c[2], c[3] * self.opacity, self.strokeScale * _units(strokeWidth))
 
   def visitViewbox(self, node, data):
     match = re.match(r'^[\s,]*([^\s,]+)[\s,]+([^\s,]+)[\s,]+([^\s,]+)[\s,]+([^\s,]+)[\s,]*$', _attr(node, 'viewBox'))
@@ -384,26 +382,31 @@ class _Parser:
     if data: self.handler.metadata(data)
 
   def visit(self, node):
-    old = self.matrix
+    old_matrix = self.matrix
+    old_opacity = self.opacity
+
+    style = _attr(node, 'style') or ''
+    style = dict(tuple(y.strip() for y in x.split(':')) for x in style.split(';') if x)
+    self.opacity *= float(_attr(node, 'opacity') or style.get('opacity', '1'))
 
     if _attr(node, 'transform'):
       self.matrix = self.matrix.multiply(_matrix(_attr(node, 'transform')))
 
     if node.nodeType == node.ELEMENT_NODE:
-      if node.tagName == 'path': self.visitPath(node)
-      elif node.tagName == 'rect': self.visitRect(node)
-      elif node.tagName == 'line': self.visitLine(node)
-      elif node.tagName == 'circle': self.visitCircle(node)
-      elif node.tagName == 'ellipse': self.visitEllipse(node)
-      elif node.tagName == 'polyline': self.visitPolyline(node)
-      elif node.tagName == 'polygon': self.visitPolygon(node)
+      if node.tagName == 'path': self.visitPath(node, style)
+      elif node.tagName == 'rect': self.visitRect(node, style)
+      elif node.tagName == 'line': self.visitLine(node, style)
+      elif node.tagName == 'circle': self.visitCircle(node, style)
+      elif node.tagName == 'ellipse': self.visitEllipse(node, style)
+      elif node.tagName == 'polyline': self.visitPolyline(node, style)
+      elif node.tagName == 'polygon': self.visitPolygon(node, style)
       elif node.tagName == 'svg': self.visitSVG(node)
 
     for child in node.childNodes:
       self.visit(child)
 
-    if _attr(node, 'transform'):
-      self.matrix = old
+    self.matrix = old_matrix
+    self.opacity = old_opacity
 
   def _path(self, data):
     def next():

@@ -51,23 +51,23 @@ svg = ['''
 <svg xmlns="http://www.w3.org/2000/svg" width="500px" height="500px">
   <rect x="0" y="0" width="500" height="500" fill="#EEEEEE"/>
 
-  <rect x="10" y="10" width="50" height="50" rx="10" ry="200" fill="#FF0000" stroke="black" stroke-width="4"/>
-  <path d="M 10 70 60 70 60 120 10 120 Z" fill="#FF0000" stroke="black" stroke-width="4"/>
-  <circle cx="95" cy="35" r="25" fill="#FF0000" stroke="black" stroke-width="4"/>
-  <ellipse cx="95" cy="95" rx="25" ry="15" fill="#FF0000" stroke="black" stroke-width="4"/>
-  <polygon points="130 70 180 70 155 120" fill="#FF0000" stroke="black" stroke-width="4"/>
-  <polyline points="130 10 180 10 155 60" fill="#FF0000" stroke="black" stroke-width="4"/>
-  <path d="M 190 10 C 215 10 240 10 240 35 Q 215 35 215 60" fill="#FF0000" stroke="black" stroke-width="4"/>
+  <rect x="10" y="10" width="50" height="50" rx="10" ry="200" fill="#FF0000" stroke="black" stroke-width="4" opacity="0.5"/>
+  <path d="M 10 70 60 70 60 120 10 120 Z" fill="#FF0000" stroke="black" stroke-width="4" opacity="0.5"/>
+  <circle cx="95" cy="35" r="25" fill="#FF0000" stroke="black" stroke-width="4" opacity="0.5"/>
+  <ellipse cx="95" cy="95" rx="25" ry="15" fill="#FF0000" stroke="black" stroke-width="4" opacity="0.5"/>
+  <polygon points="130 70 180 70 155 120" fill="#FF0000" stroke="black" stroke-width="4" opacity="0.5"/>
+  <polyline points="130 10 180 10 155 60" fill="#FF0000" stroke="black" stroke-width="4" opacity="0.5"/>
+  <path d="M 190 10 C 215 10 240 10 240 35 Q 215 35 215 60" fill="#FF0000" stroke="black" stroke-width="4" opacity="0.5"/>
 
-  <rect transform="matrix(0 1 -1 0 400 0)" x="10" y="10" width="50" height="50" rx="10" ry="200" style="fill:green; stroke : black ; stroke-width:4"/>
-  <path transform="matrix(0 1 -1 0 400 0)" d="M 10 70 60 70 60 120 10 120 Z" style="fill:green; stroke : black ; stroke-width:4"/>
-  <circle transform="matrix(0 1 -1 0 400 0)" cx="95" cy="35" r="25" style="fill:green; stroke : black ; stroke-width:4"/>
-  <ellipse transform="matrix(0 1 -1 0 400 0)" cx="95" cy="95" rx="25" ry="15" style="fill:green; stroke : black ; stroke-width:4"/>
-  <polygon transform="matrix(0 1 -1 0 400 0)" points="130 70 180 70 155 120" style="fill:green; stroke : black ; stroke-width:4"/>
-  <polyline transform="matrix(0 1 -1 0 400 0)" points="130 10 180 10 155 60" style="fill:green; stroke : black ; stroke-width:4"/>
-  <path transform="matrix(0 1 -1 0 400 0)" d="M 190 10 C 215 10 240 10 240 35 Q 215 35 215 60" style="fill:green; stroke : black ; stroke-width:4"/>
+  <rect transform="matrix(0 1 -1 0 400 0)" x="10" y="10" width="50" height="50" rx="10" ry="200" style="fill:green; stroke : black ; stroke-width:4 ; opacity:0.5"/>
+  <path transform="matrix(0 1 -1 0 400 0)" d="M 10 70 60 70 60 120 10 120 Z" style="fill:green; stroke : black ; stroke-width:4 ; opacity:0.5"/>
+  <circle transform="matrix(0 1 -1 0 400 0)" cx="95" cy="35" r="25" style="fill:green; stroke : black ; stroke-width:4 ; opacity:0.5"/>
+  <ellipse transform="matrix(0 1 -1 0 400 0)" cx="95" cy="95" rx="25" ry="15" style="fill:green; stroke : black ; stroke-width:4 ; opacity:0.5"/>
+  <polygon transform="matrix(0 1 -1 0 400 0)" points="130 70 180 70 155 120" style="fill:green; stroke : black ; stroke-width:4 ; opacity:0.5"/>
+  <polyline transform="matrix(0 1 -1 0 400 0)" points="130 10 180 10 155 60" style="fill:green; stroke : black ; stroke-width:4 ; opacity:0.5"/>
+  <path transform="matrix(0 1 -1 0 400 0)" d="M 190 10 C 215 10 240 10 240 35 Q 215 35 215 60" style="fill:green; stroke : black ; stroke-width:4 ; opacity:0.5"/>
 
-  <g transform="matrix(0 -1 1 0 0 400)">
+  <g transform="matrix(0 -1 1 0 0 400)" opacity="0.5">
     <rect x="10" y="10" width="50" height="50" rx="10" ry="200" fill="#00F" stroke="black" stroke-width="4"/>
     <path d="M 10 70 60 70 60 120 10 120 Z" fill="#00F" stroke="black" stroke-width="4"/>
     <circle cx="95" cy="35" r="25" fill="#00F" stroke="black" stroke-width="4"/>
