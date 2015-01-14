@@ -545,5 +545,14 @@ def _points(text):
   return [_Vector(float(p[0]), float(p[1])) for p in zip(tokens[::2], tokens[1::2])]
 
 def _matrix(text):
-  numbers = map(float, list(re.match(r'matrix\s*\(\s*([^,\s]*)[,\s]+([^,\s]*)[,\s]+([^,\s]*)[,\s]+([^,\s]*)[,\s]+([^,\s]*)[,\s]+([^,\s]*)\s*\)', text).groups()))
-  return _Matrix(numbers[0], numbers[2], numbers[4], numbers[1], numbers[3], numbers[5])
+  match = re.match(r'matrix\s*\(\s*([^,\s]*)[,\s]+([^,\s]*)[,\s]+([^,\s]*)[,\s]+([^,\s]*)[,\s]+([^,\s]*)[,\s]+([^,\s]*)\s*\)', text)
+  if match:
+    numbers = map(float, list(match.groups()))
+    return _Matrix(numbers[0], numbers[2], numbers[4], numbers[1], numbers[3], numbers[5])
+
+  match = re.match(r'translate\s*\(\s*([^,\s]*)[,\s]+([^,\s]*)\s*\)', text)
+  if match:
+    numbers = map(float, list(match.groups()))
+    return _Matrix(1, 0, numbers[0], 0, 1, numbers[1])
+
+  raise Exception('Unsupported transform syntax: %s' % repr(text))
